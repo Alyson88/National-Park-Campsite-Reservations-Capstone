@@ -1,0 +1,108 @@
+  <applicationSettings>
+    <VendingMachine.Properties.Settings>
+      <setting name="Connectionstring" serializeAs="String">
+        <value>Data Source=.\sqlexpress;Initial Catalog=NationalParks;Integrated Security=True</value>
+      </setting>
+      <setting name="DataSourceIsDatabase" serializeAs="String">
+        <value>True</value>
+      </setting>
+    </VendingMachine.Properties.Settings>
+  </applicationSettings>
+  
+  
+  private int parkIdSelected = 0;
+        private string connectionString = "";
+
+        public void RunCLI(string DatabaseConnectionString)
+        {
+            connectionString = DatabaseConnectionString;
+            ParkSqlDAL parkDal = new ParkSqlDAL(connectionString);
+            List<Park> parksAlphabetical = parkDal.GetAlphabeticalListOfAllParks();
+            List<Park> parksById = parkDal.GetAllParksById();
+
+            ParkMenu(parksAlphabetical);
+            //ParkInfo(parksAlphabetical, parkIdSelected);
+
+            //while (true)
+            //{
+            //    Console.Clear();
+
+            //}
+        }
+
+        private void ParkMenu(List<Park> parks)
+        {
+            List<int> availableIds = new List<int>();
+            Console.WriteLine("National Parks\n");
+            Console.WriteLine("Select a Park ID Number for Further Details");
+            for (int i = 0; i < parks.Count; i++)
+            {
+                Console.WriteLine("   " + parks[i].Park_Id + " - " + parks[i].Name);
+                availableIds.Add(parks[i].Park_Id);
+            }
+            Console.WriteLine("   Q - quit\n");
+            Console.Write("   Selection: ");
+            string parkMenuSelection = Console.ReadLine();
+
+            try
+            {
+                if (parkMenuSelection.ToLower() == "q")
+                {
+                    Environment.Exit(0);
+                }
+                else if (availableIds.Contains(int.Parse(parkMenuSelection)))
+                {
+                    parkIdSelected = int.Parse(parkMenuSelection);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Clear();
+                Console.WriteLine("That was not a valid selection\n"); // Do we need to worry about if it is neither a valid park or Q?
+                ParkMenu(parksAlphabetical);
+            }
+        }
+
+        //private void ParkInfo(List<Park> parks, int parkId)
+        //{
+        //    //ParkSqlDAL parkDal = new ParkSqlDAL(connectionString);
+        //    //List<Park> parks = parkDal.GetAllParksByIndex();
+        //    const int columnWidth = 21;
+
+        //    Console.WriteLine("Park Information");
+        //    Console.WriteLine(allParks[parkId]);
+        //    Console.WriteLine("   Location:".PadRight(columnWidth) + parks[parkSelection].Location);
+        //    Console.WriteLine("   Established:".PadRight(columnWidth) + parks[parkSelection].Establish_Date.Date);
+        //    Console.WriteLine("   Area:".PadRight(columnWidth) + parks[parkSelection].Area + " sq km");
+        //    Console.WriteLine("   Annual Visitors:".PadRight(columnWidth) + parks[parkSelection].Visitors + "\n");
+        //    Console.WriteLine("   " + parks[parkSelection].Description + "\n"); // wrap text?
+        //    Console.WriteLine("Select an Option to Continue");
+        //    Console.WriteLine("   1) View Campgrounds in " + parks[parkSelection].Name);
+        //    Console.WriteLine("   2) Search for a Reservation");
+        //    Console.WriteLine("   3) Return to the Previous Screen");
+        //}
+
+        private void CampgroundMenu()
+        {
+
+        }
+
+        private void CampgroundInfo()
+        {
+
+        }
+
+        private void ReservationMenu()
+        {
+
+        }
+
+        private void ReservationSearch()
+        {
+
+        }
+
+        private void MakeReservation()
+        {
+
+        }
